@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="fabric.js"></script>
+</head>
+
+<body>
+    <!-- <h2>Fabric js</h2> -->
+    <canvas id="canvas" width="600" height="500" style="border: 2px solid black;"></canvas>
+</body>
+<script>
+    const url = "https://www.techfunnel.com/wp-content/uploads/2017/12/7-Types-of-Hackers.jpg"
+    const canvas = new fabric.Canvas('canvas');
+    const testrect = new fabric.Rect({
+        fill: 'red',
+        width: 20,
+        height: 20
+    })
+    canvas.add(testrect)
+    const image = fabric.Image.fromURL(url, function (img) {
+        img.scale(0.5)
+        img.set({ left: 50, top: 50 })
+        canvas.add(img)
+    });
+    const ImageHelper = (image) => {
+        const rect = new fabric.Rect({
+            fill: "black",
+            top: image.top,
+            left: image.left,
+            width: image.width * image.scaleX,
+            height: image.height * image.scaleY,
+            // scale: target.scale,
+            angle: image.angle
+
+        })
+        canvas.add(rect)
+        image.setCoords()
+        canvas.sendToBack(rect)
+        image.rect = rect
+    }
+    fabric.util.addListener(canvas.upperCanvasEl, 'dblclick', function (e) {
+        var target = canvas.findTarget(e);
+        if (target) {
+            if (target.type === 'image') {
+                console.log(target.type);
+                ImageHelper(target);
+                target.opacity = 0.7
+            }
+            else {
+                console.log(target)
+            }
+        }
+    });
+
+</script>
+
+</html>
